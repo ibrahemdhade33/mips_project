@@ -9,11 +9,11 @@ error_message: .asciiz "\nthe number of levels you enter is incorrect\n"
 even_level: .float 1.5 ,0.5, 0.5 ,1.5
 fileName: .asciiz "input.txt"
 fileNameResult: .asciiz "output.txt"
-fileWords: .space 1024
+fileWords: .space 61440
 sizes :    .word 2
 
-final_result: .space 9600
-temp_result: .space 9600
+final_result: .space 61440
+temp_result: .space 61440
 file1: .asciiz "##############################################################################\n\nthe array after down sampling :\n\n"
 file2: .asciiz "\n\n##############################################################################\n\n"
 
@@ -63,14 +63,14 @@ main:
 	#li $v0,1
 	#syscall
 	ble $s1,$t3,no_error_message
-	
+		
 		la $a0,error_message
 		li $v0,4
 		syscall
 		b end
 	no_error_message:
-		jal down_sampling_arithmatic_mean
-		#jal down_samling_using_median
+		#jal down_sampling_arithmatic_mean
+		jal down_samling_using_median
 		jal double2str_and_print_to_file
 	end:
 	li $v0,10
@@ -343,7 +343,7 @@ read_file_and_store:		 		#read the file and store the data
 			li $v0, 14		# read_file syscall code = 14
 			move $a0,$s0		# file descriptor
 			la $a1,fileWords  	# The buffer that holds the string of the WHOLE file
-			la $a2,1024		# hardcoded buffer length
+			la $a2,61440		# hardcoded buffer length
 			syscall
 			move $s1,$v0	
 			# print whats in the file
@@ -414,9 +414,10 @@ read_file_and_store:		 		#read the file and store the data
 			 				#save the link register
 			loop1: 	lb $t3, 0($t2) 		# $t3 = A[i]
 				addiu $t2, $t2, 1 	# t2++
-				beq $t3, '\n', done1	# (i == \n)? branch to done
+				beq $t3, 'e', done1	# (i == \n)? branch to done
 				beq $t3, '\r', else1	# (str[i] == \r || str[i] == space )? branch to else
-				beq $t3,' ',else1   
+				beq $t3,' ',else1 
+				beq $t3,'\n',loop1
 				sb $t3,0($t4)	  	# store the value at address in t4
 				addiu $t4, $t4, 1 	# t4++
 				b loop1
@@ -696,7 +697,7 @@ double2str_and_print_to_file:							#this function to convert from double to str
     	li $v0,15		# write_file syscall code = 15
     	move $a0,$s1		# file descriptor
     	la $a1,final_result	# the string that will be written
-    	la $a2,9600		# length of the toWrite string
+    	la $a2,4096	# length of the toWrite string
     	syscall
     	
 	#MUST CLOSE FILE IN ORDER TO UPDATE THE FILE

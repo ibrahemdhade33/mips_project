@@ -46,15 +46,20 @@ void down_samling_meadian(vector<float> arr)
     fstream outfile;
     outfile.open("output_test_cases.txt", ios_base::app);
     outfile << "result for " << l << " levels using median : \n";
-    for (auto i : arr)
-        outfile << i << " ";
+    for (int i = 0; i < arr.size(); i++)
+    {
+        outfile << arr[i] << " ";
+        if (i % c == 0)
+            outfile << "\n";
+    }
+
     outfile << "\n############################################################################\n";
     outfile.close();
 }
 void down_samling_areethmatic_mean(vector<float> arr)
 {
     int cn = 0;
-    // arr = {2, 5, 4, 1, 7, 4, 7, 2, 10, 11, 20, 7, 7, 12, 4, 8};
+
     float even[4] = {1.5, 0.5, 0.5, 1.5};
     float odd[4] = {0.5, 1.5, 1.5, 0.5};
 
@@ -74,7 +79,7 @@ void down_samling_areethmatic_mean(vector<float> arr)
                     sum += arr[i + j] * odd[0] + arr[i + 1 + j] * odd[1] + arr[i + c + j] * odd[2] + arr[i + c + 1 + j] * odd[3];
                 //  cout << sum << "\n";
                 sum /= 4.0;
-                cout << cn << "-" << sum << "\n";
+
                 cn++;
                 temp.push_back(sum);
             }
@@ -86,8 +91,12 @@ void down_samling_areethmatic_mean(vector<float> arr)
     fstream outfile;
     outfile.open("output_test_cases.txt", ios_base::app);
     outfile << "result for " << l << " levels using Arethmatic mean : \n";
-    for (auto i : arr)
-        outfile << i << " ";
+    for (int i = 0; i < arr.size(); i++)
+    {
+        outfile << arr[i] << " ";
+        if (i % c == 0)
+            outfile << "\n";
+    }
     outfile << "\n############################################################################\n";
     outfile.close();
 }
@@ -138,7 +147,7 @@ int main()
             arr.push_back(random_number);
             outfile << random_number;
 
-            if (i == r - 1 && j == c - 1)
+            if (j == c - 1)
                 outfile << "\n";
             else
                 outfile << " ";
