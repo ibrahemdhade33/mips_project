@@ -49,7 +49,7 @@ void down_samling_meadian(vector<float> arr)
     for (int i = 0; i < arr.size(); i++)
     {
         outfile << arr[i] << " ";
-        if (i % c == 0)
+        if ((i + 1) % c == 0)
             outfile << "\n";
     }
 
@@ -94,7 +94,7 @@ void down_samling_areethmatic_mean(vector<float> arr)
     for (int i = 0; i < arr.size(); i++)
     {
         outfile << arr[i] << " ";
-        if (i % c == 0)
+        if ((i + 1) % c == 0)
             outfile << "\n";
     }
     outfile << "\n############################################################################\n";
