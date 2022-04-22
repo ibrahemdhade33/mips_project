@@ -2,7 +2,7 @@
 .data
 #define the data for project
 
-
+menu: .asciiz "1-Aretmatic mean\n2-Median\n"
 odd_level: .float 0.5 , 1.5,1.5,0.5
 read_levels: .asciiz "please enter the number of levels\n"
 error_message: .asciiz "\nthe number of levels you enter is incorrect\n"
@@ -67,10 +67,25 @@ main:
 		la $a0,error_message
 		li $v0,4
 		syscall
+		
+		
 		b end
 	no_error_message:
-		#jal down_sampling_arithmatic_mean
+		la $a0,menu
+		li $v0,4
+		syscall
+		li $v0,5
+		syscall
+		move $a1,$v0
+		beq $a1,2,me
+		beq $a1,1,am
+		am:
+		jal down_sampling_arithmatic_mean
+		b print
+		me:
 		jal down_samling_using_median
+		b print
+		print:
 		jal double2str_and_print_to_file
 	end:
 	li $v0,10
